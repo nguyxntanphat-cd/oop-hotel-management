@@ -21,6 +21,7 @@ Sau đó lên GitHub tạo **Pull Request** vào `main`, ghi `Closes #2` trong m
 ## 2. Quy ước code
 
 - Package gốc `hotel`. Đặt lớp đúng package theo [`docs/THIET_KE.md`](docs/THIET_KE.md).
+- Viết module theo mẫu trong [`docs/HUONG_DAN_MODULE.md`](docs/HUONG_DAN_MODULE.md).
 - Tên lớp `PascalCase`, phương thức/biến `camelCase`, hằng số `UPPER_CASE`.
 - Thuộc tính để `private`/`protected`, truy cập qua getter/setter.
 - **Mọi lớp phải có constructor** (mặc định + đầy đủ tham số).
