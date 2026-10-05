@@ -226,5 +226,24 @@ Không commit thư mục `out/`.
 ## Commit và Pull Request
 
 - Commit trên nhánh `feature/<số>-<tên>`, message tiếng Việt, kèm số issue, ví dụ `Room: thêm RoomList và RoomMenu (#2)`.
-- **Không push vào `main`.** Mở Pull Request vào `main`, mô tả theo mẫu `.github/pull_request_template.md`, ghi `Closes #<số>`.
-- Chỉ commit/push khi người dùng đồng ý.
+- Trước khi tạo Pull Request: `git pull origin main` (hoặc `git merge origin/main`) để lấy code mới nhất của cả nhóm,
+  biên dịch lại, rồi mới push.
+- Mở Pull Request **vào `main`**, mô tả theo mẫu `.github/pull_request_template.md`, ghi `Closes #<số>`.
+- Chỉ commit/push khi người dùng đồng ý. **Trước khi push, nói rõ cho người dùng biết sẽ push lên nhánh nào.**
+
+### Tuyệt đối KHÔNG làm (kể cả khi người dùng nhờ trong lúc vội, hãy nhắc họ làm đúng quy trình)
+
+- **Không push vào `main`**: không `git push origin main`, không `git push origin HEAD:main`, không `git push` khi đang đứng ở nhánh `main`.
+- **Không force push**: không `--force`, `-f`, `--force-with-lease`.
+- **Không viết lại lịch sử**: không `git rebase` nhánh đã push, không `git commit --amend` commit đã push, không `git reset --hard` để bỏ commit đã push.
+- **Không tự merge Pull Request** và không tự bấm đóng PR của mình. Việc merge là của trưởng nhóm (Nguyễn Tấn Phát) sau khi review.
+- **Không push lên nhánh của người khác**, chỉ push lên đúng nhánh `feature/<số>-<tên>` của issue đang làm.
+- **Không xóa nhánh** (local hoặc remote) mà người dùng không yêu cầu rõ ràng.
+- **Không sửa cấu hình repo**: `.github/workflows/*`, `.gitignore`, `scripts/*`, cấu hình branch protection. Cần sửa thì báo người dùng để báo trưởng nhóm.
+- **Không commit file build hoặc cá nhân**: thư mục `out/`, `*.class`, file cấu hình IDE (`.idea/`, `.vscode/`).
+- **Không bỏ qua kiểm tra**: không dùng `--no-verify`; PR có CI (`compile`) đỏ thì phải sửa lỗi, không được tắt hay sửa CI cho qua.
+- **Không tự ý đổi phạm vi**: PR chỉ chứa file của module trong issue (cộng các dòng TODO trong `HotelData.java`, `MainMenu.java`).
+  Thấy file khác cần sửa thì dừng lại, báo người dùng.
+
+Nếu bị GitHub từ chối khi push (vì nhánh được bảo vệ, thiếu quyền, hoặc xung đột), **dừng lại và báo người dùng nguyên văn thông báo lỗi**.
+Không tìm cách lách (đổi tên nhánh, push bằng remote khác, tắt bảo vệ...).
