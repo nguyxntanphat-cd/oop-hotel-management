@@ -66,8 +66,8 @@ Hoặc mở bằng IntelliJ / Eclipse / NetBeans: đánh dấu `src` là *Source
 
 | # | Họ tên | MSSV | GitHub | Phụ trách |
 |---|---|---|---|---|
-| TV1 | | | | Trưởng nhóm — Khung chung, Thống kê, tích hợp |
-| TV2 | | | | Module Phòng |
-| TV3 | | | | Module Khách hàng + Dịch vụ |
-| TV4 | | | | Module Nhân viên |
-| TV5 | | | | Module Đặt phòng + Hóa đơn |
+| TV1 | Nguyễn Tấn Phát | 3124560068 | | Trưởng nhóm — Khung chung, Thống kê, tích hợp |
+| TV2 | Nguyễn Duy Khang | 3125410076 | | Module Phòng |
+| TV3 | Phạm Phú Khang | 3125410078 | | Module Khách hàng + Dịch vụ |
+| TV4 | Bùi Khắc Cao Văn | 3125410202 | | Module Nhân viên |
+| TV5 | Đỗ Duy Anh | 3125410003 | | Module Đặt phòng + Hóa đơn |
