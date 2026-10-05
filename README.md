@@ -2,7 +2,7 @@
 
 Đồ án môn **Lập trình hướng đối tượng** — Chương trình **quản lý khách sạn** viết bằng **Java (console)**.
 
-Nhóm 5 thành viên. Bảng phân công: [`docs/PHAN_CONG.md`](docs/PHAN_CONG.md) · Thiết kế lớp: [`docs/THIET_KE.md`](docs/THIET_KE.md) · Quy trình làm việc: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+Nhóm 5 thành viên. Bảng phân công: [`docs/PHAN_CONG.md`](docs/PHAN_CONG.md) · Thiết kế lớp: [`docs/THIET_KE.md`](docs/THIET_KE.md) · Hướng dẫn viết module: [`docs/HUONG_DAN_MODULE.md`](docs/HUONG_DAN_MODULE.md) · Quy trình làm việc: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ## Chức năng
 
