@@ -19,7 +19,9 @@ File này dành cho các AI (Claude Code, Codex, Cursor, Copilot, Gemini...) là
 ## Đọc trước khi code (theo thứ tự)
 
 1. `docs/HUONG_DAN_MODULE.md`: cách viết 1 module trên khung có sẵn, có code mẫu. **Quan trọng nhất.**
-2. `docs/THIET_KE.md`: tên lớp, package, chữ ký hàm, **định dạng file dữ liệu**, tiền tố mã. Đây là "hợp đồng" chung của nhóm.
+2. `docs/THIET_KE.md`: sơ đồ lớp, **hợp đồng tích hợp** (mục 3: hàm public mỗi module bắt buộc có),
+   luồng nghiệp vụ giữa các module (mục 4), **định dạng file dữ liệu** (mục 5), mã và dữ liệu mẫu dùng chung (mục 6).
+   Đây là "hợp đồng" chung của nhóm. **Nếu issue ghi khác `docs/THIET_KE.md` thì làm theo `docs/THIET_KE.md`.**
 3. Issue mà người dùng được giao (xem mục "Khi được giao một issue").
 4. Code khung: `src/hotel/common/BaseList.java`, `src/hotel/menu/CrudMenu.java`, `src/hotel/model/Person.java`,
    `src/hotel/util/InputHelper.java`, `src/hotel/util/FileHelper.java`, `src/hotel/HotelData.java`, `src/hotel/menu/MainMenu.java`.
@@ -47,7 +49,18 @@ File này dành cho các AI (Claude Code, Codex, Cursor, Copilot, Gemini...) là
 - `docs/THIET_KE.md`: không tự đổi tên lớp, chữ ký hàm, định dạng file.
 
 ### Được sửa có giới hạn
-- `HotelData.java`, `MainMenu.java`: chỉ các dòng TODO của issue đang làm.
+- `HotelData.java`, `MainMenu.java`: chỉ các dòng TODO của issue đang làm
+  (riêng issue #6 sửa thêm thân hàm `isRoomInUse` / `isCustomerInUse` theo TODO).
+
+### Ghép với module khác (để cả nhóm chạy chung được)
+- Module của mình phải có **đủ và đúng** các hàm public ghi trong `docs/THIET_KE.md` mục 3 (đúng tên, tham số, kiểu trả về),
+  vì module khác sẽ gọi chúng. Được thêm hàm khác.
+- Chỉ gọi module khác qua đúng các hàm trong mục 3. Nếu module đó **chưa được merge vào `main`**,
+  không tự viết thay lớp của người khác: báo người dùng và chỉ làm phần không phụ thuộc.
+- Lấy danh sách của module khác qua `HotelData.ROOMS`, `HotelData.CUSTOMERS`, ... Không `new RoomList()` lần nữa.
+- Chặn xóa phòng / khách đang có booking bằng `HotelData.isRoomInUse(...)` / `HotelData.isCustomerInUse(...)` trong `canRemove()`.
+- Sửa dữ liệu của module khác (vd đổi trạng thái phòng) thì gọi `saveToFile()` của danh sách đó ngay sau khi sửa.
+- Dữ liệu mẫu dùng đúng các mã ở `docs/THIET_KE.md` mục 6 để file của các module tham chiếu khớp nhau.
 
 ### Code
 - Tương thích **Java 8**: không dùng `var`, `record`, switch dạng `->`, text block `"""`, `List.of(...)`.

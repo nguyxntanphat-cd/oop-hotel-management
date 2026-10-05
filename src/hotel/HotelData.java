@@ -6,6 +6,10 @@ package hotel;
  * <p>
  * Khi hoàn thành module, mỗi thành viên bỏ comment dòng TODO của mình
  * (khai báo danh sách + dòng trong loadAll() / saveAll()).
+ * <p>
+ * Module khác luôn lấy dữ liệu qua đây, ví dụ {@code HotelData.ROOMS.findById("101")};
+ * không tự tạo {@code new RoomList()} vì sẽ thành 2 danh sách khác nhau.
+ * Xem "Hợp đồng tích hợp" trong docs/THIET_KE.md.
  */
 public final class HotelData {
     // TODO #2 Phòng:      public static final RoomList ROOMS = new RoomList();
@@ -36,5 +40,22 @@ public final class HotelData {
         // TODO #5: EMPLOYEES.saveToFile();
         // TODO #6: BOOKINGS.saveToFile();
         // TODO #7: INVOICES.saveToFile();
+    }
+
+    // ===================== Kiểm tra ràng buộc giữa các module =====================
+    // RoomMenu (#2) và CustomerMenu (#3) gọi 2 hàm này trong canRemove() để chặn xóa.
+    // Hiện luôn trả về false để code #2, #3 biên dịch được trước khi có BookingList.
+    // TV5 sửa thân hàm khi xong #6, TV2 và TV3 không phải sửa gì thêm.
+
+    /** Phòng đang có booking chưa kết thúc (đã đặt hoặc đang ở) thì không được xóa. */
+    public static boolean isRoomInUse(String roomNumber) {
+        // TODO #6: return BOOKINGS.hasActiveBookingForRoom(roomNumber);
+        return false;
+    }
+
+    /** Khách đang có booking chưa kết thúc (đã đặt hoặc đang ở) thì không được xóa. */
+    public static boolean isCustomerInUse(String customerId) {
+        // TODO #6: return BOOKINGS.hasActiveBookingForCustomer(customerId);
+        return false;
     }
 }

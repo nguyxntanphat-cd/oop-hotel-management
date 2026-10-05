@@ -3,7 +3,8 @@
 Khung chung (issue #1) đã cài sẵn **xem / thêm / sửa / xóa / tìm kiếm / đọc-ghi file**.
 Mỗi module chỉ cần viết **3 lớp**: lớp đối tượng (model), lớp danh sách (list), lớp menu.
 
-Ví dụ dưới đây dùng lớp `Service` (#4). Các module khác làm y hệt.
+Ví dụ dưới đây dùng lớp `Service` (#4), **rút gọn còn 3 thuộc tính** cho dễ đọc. Các module khác làm y hệt.
+Thuộc tính, hàm public và định dạng file **đầy đủ** của từng lớp xem ở [`THIET_KE.md`](THIET_KE.md) mục 3 và mục 5.
 
 ## Bước 1 — Lớp đối tượng (`hotel.model`)
 
@@ -186,6 +187,7 @@ public class ServiceMenu extends CrudMenu<Service> {
 ## Bước 4 — Gắn vào chương trình
 
 1. `HotelData.java`: bỏ comment 3 dòng TODO của module mình (khai báo danh sách, `loadFromFile`, `saveToFile`).
+   Module khác dùng danh sách của mình qua `HotelData.SERVICES`, nên phải có đủ hàm public ở `THIET_KE.md` mục 3.
 2. `MainMenu.java`: thay `notReady(x);` bằng `new ServiceMenu(HotelData.SERVICES).run();`.
 3. Thêm dữ liệu mẫu vào `data/<file>.txt`.
 
