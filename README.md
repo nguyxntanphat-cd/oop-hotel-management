@@ -2,7 +2,7 @@
 
 Đồ án môn **Lập trình hướng đối tượng** — Chương trình **quản lý khách sạn** viết bằng **Java (console)**.
 
-Nhóm 5 thành viên. Bảng phân công: [`docs/PHAN_CONG.md`](docs/PHAN_CONG.md) · Thiết kế lớp: [`docs/THIET_KE.md`](docs/THIET_KE.md) · Hướng dẫn viết module: [`docs/HUONG_DAN_MODULE.md`](docs/HUONG_DAN_MODULE.md) · Quy trình làm việc: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+Nhóm 5 thành viên. Bảng phân công: [`docs/PHAN_CONG.md`](docs/PHAN_CONG.md) · Thiết kế lớp: [`docs/THIET_KE.md`](docs/THIET_KE.md) · Hướng dẫn viết module: [`docs/HUONG_DAN_MODULE.md`](docs/HUONG_DAN_MODULE.md) · Quy trình làm việc: [`CONTRIBUTING.md`](CONTRIBUTING.md) · Dùng AI để code: [`AGENTS.md`](AGENTS.md)
 
 ## Chức năng
 
@@ -66,8 +66,8 @@ Hoặc mở bằng IntelliJ / Eclipse / NetBeans: đánh dấu `src` là *Source
 
 | # | Họ tên | MSSV | GitHub | Phụ trách |
 |---|---|---|---|---|
-| TV1 | | | | Trưởng nhóm — Khung chung, Thống kê, tích hợp |
-| TV2 | | | | Module Phòng |
-| TV3 | | | | Module Khách hàng + Dịch vụ |
-| TV4 | | | | Module Nhân viên |
-| TV5 | | | | Module Đặt phòng + Hóa đơn |
+| TV1 | Nguyễn Tấn Phát | 3124560068 | [@nguyxntanphat-cd](https://github.com/nguyxntanphat-cd) | Trưởng nhóm — Khung chung, Thống kê, tích hợp |
+| TV2 | Nguyễn Duy Khang | 3125410076 | [@duykhang3224-sgp](https://github.com/duykhang3224-sgp) | Module Phòng |
+| TV3 | Phạm Phú Khang | 3125410078 | [@khangpham4399-art](https://github.com/khangpham4399-art) | Module Khách hàng + Dịch vụ |
+| TV4 | Bùi Khắc Cao Văn | 3125410202 | [@Vanes-void](https://github.com/Vanes-void) | Module Nhân viên |
+| TV5 | Đỗ Duy Anh | 3125410003 | [@doduyanh258-hash](https://github.com/doduyanh258-hash) | Module Đặt phòng + Hóa đơn |
