@@ -4,13 +4,13 @@ Mỗi đầu việc tương ứng 1 **issue** trên GitHub. Ai nhận issue nào
 
 | Thành viên | Issue | Nội dung | Số lớp |
 |---|---|---|---|
-| **TV1** (trưởng nhóm) | #1 | Khung chung: interface, `BaseList`, `Person`, `Menu`/`CrudMenu`, tiện ích static, `HotelData`, `Main`, `MainMenu` | ~16 |
+| **TV1** — Nguyễn Tấn Phát (3124560068), trưởng nhóm | #1 | Khung chung: interface, `BaseList`, `Person`, `Menu`/`CrudMenu`, tiện ích static, `HotelData`, `Main`, `MainMenu` | ~16 |
 | | #8 | Thống kê, tích hợp các module, dữ liệu mẫu | 1 |
-| **TV2** | #2 | Module Phòng | 7 |
-| **TV3** | #3 | Module Khách hàng | 4 |
+| **TV2** — Nguyễn Duy Khang (3125410076) | #2 | Module Phòng | 7 |
+| **TV3** — Phạm Phú Khang (3125410078) | #3 | Module Khách hàng | 4 |
 | | #4 | Module Dịch vụ | 3 |
-| **TV4** | #5 | Module Nhân viên | 6 |
-| **TV5** | #6 | Module Đặt phòng (check-in/check-out) | 5 |
+| **TV4** — Bùi Khắc Cao Văn (3125410202) | #5 | Module Nhân viên | 6 |
+| **TV5** — Đỗ Duy Anh (3125410003) | #6 | Module Đặt phòng (check-in/check-out) | 5 |
 | | #7 | Module Hóa đơn | 3 |
 | **Cả nhóm** | #9 | UML, báo cáo, kịch bản demo, chuẩn bị vấn đáp | — |
 | **Cả nhóm** | #10 | Checklist nghiệm thu theo yêu cầu đồ án | — |

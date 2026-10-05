@@ -47,6 +47,8 @@ Enum: RoomStatus, BookingStatus
 
 ## 2. Danh sách lớp theo package
 
+> TV1 = Nguyễn Tấn Phát · TV2 = Nguyễn Duy Khang · TV3 = Phạm Phú Khang · TV4 = Bùi Khắc Cao Văn · TV5 = Đỗ Duy Anh
+
 | Package | Lớp | Loại | Người làm |
 |---|---|---|---|
 | `hotel` | `Main`, `HotelData` | class (static) | TV1 |
