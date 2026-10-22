@@ -1,5 +1,7 @@
 package hotel;
 
+import hotel.list.EmployeeList;
+
 /**
  * Nơi giữ TẤT CẢ danh sách của chương trình dưới dạng thuộc tính static,
  * để các module tra cứu lẫn nhau (ví dụ BookingMenu cần ROOMS và CUSTOMERS).
@@ -15,7 +17,7 @@ public final class HotelData {
     // TODO #2 Phòng:      public static final RoomList ROOMS = new RoomList();
     // TODO #3 Khách hàng: public static final CustomerList CUSTOMERS = new CustomerList();
     // TODO #4 Dịch vụ:    public static final ServiceList SERVICES = new ServiceList();
-    // TODO #5 Nhân viên:  public static final EmployeeList EMPLOYEES = new EmployeeList();
+    public static final EmployeeList EMPLOYEES = new EmployeeList();
     // TODO #6 Đặt phòng:  public static final BookingList BOOKINGS = new BookingList();
     // TODO #7 Hóa đơn:    public static final InvoiceList INVOICES = new InvoiceList();
 
@@ -27,7 +29,7 @@ public final class HotelData {
         // TODO #2: ROOMS.loadFromFile();
         // TODO #3: CUSTOMERS.loadFromFile();
         // TODO #4: SERVICES.loadFromFile();
-        // TODO #5: EMPLOYEES.loadFromFile();
+        EMPLOYEES.loadFromFile();
         // TODO #6: BOOKINGS.loadFromFile();
         // TODO #7: INVOICES.loadFromFile();
     }
@@ -37,6 +39,7 @@ public final class HotelData {
         // TODO #2: ROOMS.saveToFile();
         // TODO #3: CUSTOMERS.saveToFile();
         // TODO #4: SERVICES.saveToFile();
+        EMPLOYEES.saveToFile();
         // TODO #5: EMPLOYEES.saveToFile();
         // TODO #6: BOOKINGS.saveToFile();
         // TODO #7: INVOICES.saveToFile();
