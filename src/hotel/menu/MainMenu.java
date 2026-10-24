@@ -39,7 +39,7 @@ public class MainMenu extends Menu {
                 notReady(4); // TODO #4: new ServiceMenu(HotelData.SERVICES).run();
                 break;
             case 4:
-                notReady(5); // TODO #5: new EmployeeMenu(HotelData.EMPLOYEES).run();
+                new EmployeeMenu(HotelData.EMPLOYEES).run();
                 break;
             case 5:
                 notReady(6); // TODO #6: new BookingMenu(HotelData.BOOKINGS).run();
