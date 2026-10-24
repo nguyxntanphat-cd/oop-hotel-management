@@ -1,6 +1,7 @@
 package hotel.util;
 
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 /**
  * Cấu hình dùng chung toàn chương trình: chỉ gồm hằng số static.
@@ -17,8 +18,15 @@ public final class AppConfig {
     /** Dạng regex của SEPARATOR, dùng cho {@code line.split(AppConfig.SEPARATOR_REGEX, -1)}. */
     public static final String SEPARATOR_REGEX = "\\|";
 
+    /** Định dạng ngày hiển thị cho người dùng khi nhập. */
     public static final String DATE_PATTERN = "dd/MM/yyyy";
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(DATE_PATTERN);
+
+    /**
+     * Bộ đọc/ghi ngày. Dùng chế độ STRICT để ngày không tồn tại (31/02, 31/04...) bị báo lỗi
+     * thay vì tự đổi sang ngày cuối tháng. Ở chế độ STRICT phải dùng "uuuu" (năm) thay cho "yyyy".
+     */
+    public static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("dd/MM/uuuu").withResolverStyle(ResolverStyle.STRICT);
 
     /** Thuế VAT áp dụng cho hóa đơn (8%). */
     public static final double VAT_RATE = 0.08;
