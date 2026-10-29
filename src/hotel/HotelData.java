@@ -1,5 +1,8 @@
 package hotel;
 
+import hotel.list.BookingList;
+import hotel.list.InvoiceList;
+
 /**
  * Nơi giữ TẤT CẢ danh sách của chương trình dưới dạng thuộc tính static,
  * để các module tra cứu lẫn nhau (ví dụ BookingMenu cần ROOMS và CUSTOMERS).
@@ -16,8 +19,8 @@ public final class HotelData {
     // TODO #3 Khách hàng: public static final CustomerList CUSTOMERS = new CustomerList();
     // TODO #4 Dịch vụ:    public static final ServiceList SERVICES = new ServiceList();
     // TODO #5 Nhân viên:  public static final EmployeeList EMPLOYEES = new EmployeeList();
-    // TODO #6 Đặt phòng:  public static final BookingList BOOKINGS = new BookingList();
-    // TODO #7 Hóa đơn:    public static final InvoiceList INVOICES = new InvoiceList();
+     public static final BookingList BOOKINGS = new BookingList();
+     public static final InvoiceList INVOICES = new InvoiceList();
 
     private HotelData() {
     }
@@ -28,8 +31,8 @@ public final class HotelData {
         // TODO #3: CUSTOMERS.loadFromFile();
         // TODO #4: SERVICES.loadFromFile();
         // TODO #5: EMPLOYEES.loadFromFile();
-        // TODO #6: BOOKINGS.loadFromFile();
-        // TODO #7: INVOICES.loadFromFile();
+         BOOKINGS.loadFromFile();
+         INVOICES.loadFromFile();
     }
 
     /** Ghi toàn bộ dữ liệu xuống thư mục data/ khi thoát. */
@@ -38,8 +41,8 @@ public final class HotelData {
         // TODO #3: CUSTOMERS.saveToFile();
         // TODO #4: SERVICES.saveToFile();
         // TODO #5: EMPLOYEES.saveToFile();
-        // TODO #6: BOOKINGS.saveToFile();
-        // TODO #7: INVOICES.saveToFile();
+         BOOKINGS.saveToFile();
+        INVOICES.saveToFile();
     }
 
     // ===================== Kiểm tra ràng buộc giữa các module =====================
@@ -49,13 +52,11 @@ public final class HotelData {
 
     /** Phòng đang có booking chưa kết thúc (đã đặt hoặc đang ở) thì không được xóa. */
     public static boolean isRoomInUse(String roomNumber) {
-        // TODO #6: return BOOKINGS.hasActiveBookingForRoom(roomNumber);
-        return false;
+        return BOOKINGS.hasActiveBookingForRoom(roomNumber);
     }
 
     /** Khách đang có booking chưa kết thúc (đã đặt hoặc đang ở) thì không được xóa. */
     public static boolean isCustomerInUse(String customerId) {
-        // TODO #6: return BOOKINGS.hasActiveBookingForCustomer(customerId);
-        return false;
+        return BOOKINGS.hasActiveBookingForCustomer(customerId);
     }
 }

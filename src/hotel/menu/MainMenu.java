@@ -42,10 +42,10 @@ public class MainMenu extends Menu {
                 notReady(5); // TODO #5: new EmployeeMenu(HotelData.EMPLOYEES).run();
                 break;
             case 5:
-                notReady(6); // TODO #6: new BookingMenu(HotelData.BOOKINGS).run();
+                new BookingMenu(HotelData.BOOKINGS).run();
                 break;
             case 6:
-                notReady(7); // TODO #7: new InvoiceMenu(HotelData.INVOICES).run();
+                new InvoiceMenu(HotelData.INVOICES).run();
                 break;
             case 7:
                 notReady(8); // TODO #8: new StatisticsMenu().run();
