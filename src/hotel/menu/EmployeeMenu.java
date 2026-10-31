@@ -70,7 +70,7 @@ public class EmployeeMenu extends CrudMenu<Employee> {
         if (old instanceof Receptionist) {
             Receptionist copy = new Receptionist((Receptionist) old);
             readCommonEdit(copy);
-            copy.setShift(InputHelper.readStringOrKeep("Ca trực (Sáng/Chiều/Đêm)", copy.getShift()));
+            copy.setShift(chooseShiftOrKeep(copy.getShift()));
             copy.setBookingsHandled(InputHelper.readIntOrKeep("Số booking đã xử lý",
                     copy.getBookingsHandled(), 0, 100000));
             return copy;
@@ -88,6 +88,16 @@ public class EmployeeMenu extends CrudMenu<Employee> {
             return copy;
         }
         return old;
+    }
+
+    /** Chọn ca trực khi sửa: chọn 1 để giữ nguyên ca cũ. */
+    private String chooseShiftOrKeep(String oldShift) {
+        String[] options = {"Giữ nguyên (" + oldShift + ")", "Sáng", "Chiều", "Đêm"};
+        int choice = InputHelper.choose("Chọn ca trực:", options);
+        if (choice == 0) {
+            return oldShift;
+        }
+        return SHIFTS[choice - 1];
     }
 
     private void readCommonEdit(Employee copy) {
