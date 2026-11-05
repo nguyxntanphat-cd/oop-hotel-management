@@ -3,6 +3,7 @@ package hotel;
 import hotel.list.BookingList;
 import hotel.list.EmployeeList;
 import hotel.list.InvoiceList;
+import hotel.list.RoomList;
 
 /**
  * Nơi giữ TẤT CẢ danh sách của chương trình dưới dạng thuộc tính static,
@@ -16,7 +17,7 @@ import hotel.list.InvoiceList;
  * Xem "Hợp đồng tích hợp" trong docs/THIET_KE.md.
  */
 public final class HotelData {
-    // TODO #2 Phòng:      public static final RoomList ROOMS = new RoomList();
+    public static final RoomList ROOMS = new RoomList();
     // TODO #3 Khách hàng: public static final CustomerList CUSTOMERS = new CustomerList();
     // TODO #4 Dịch vụ:    public static final ServiceList SERVICES = new ServiceList();
     public static final EmployeeList EMPLOYEES = new EmployeeList();
@@ -28,7 +29,7 @@ public final class HotelData {
 
     /** Đọc toàn bộ dữ liệu từ thư mục data/ khi khởi động. */
     public static void loadAll() {
-        // TODO #2: ROOMS.loadFromFile();
+        ROOMS.loadFromFile();
         // TODO #3: CUSTOMERS.loadFromFile();
         // TODO #4: SERVICES.loadFromFile();
         EMPLOYEES.loadFromFile();
@@ -38,7 +39,7 @@ public final class HotelData {
 
     /** Ghi toàn bộ dữ liệu xuống thư mục data/ khi thoát. */
     public static void saveAll() {
-        // TODO #2: ROOMS.saveToFile();
+        ROOMS.saveToFile();
         // TODO #3: CUSTOMERS.saveToFile();
         // TODO #4: SERVICES.saveToFile();
         EMPLOYEES.saveToFile();

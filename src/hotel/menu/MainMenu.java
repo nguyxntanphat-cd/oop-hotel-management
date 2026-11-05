@@ -30,7 +30,7 @@ public class MainMenu extends Menu {
     protected void handle(int choice) {
         switch (choice) {
             case 1:
-                notReady(2); // TODO #2: new RoomMenu(HotelData.ROOMS).run();
+                new RoomMenu(HotelData.ROOMS).run();
                 break;
             case 2:
                 notReady(3); // TODO #3: new CustomerMenu(HotelData.CUSTOMERS).run();
