@@ -1,0 +1,40 @@
+DV001|Ăn sáng buffet|150000.0|suất|true
+DV002|Giặt ủi|50000.0|kg|true
+DV003|Spa thư giãn|500000.0|lượt|true
+DV004|Đưa đón sân bay|300000.0|lượt|true
+DV005|Minibar|100000.0|lần|true
+DV006|Thuê xe máy|150000.0|ngày|true
+DV007|Ăn trưa Set Menu|250000.0|suất|true
+DV008|Ăn tối lãng mạn|600000.0|bàn|true
+DV009|Giặt hấp cao cấp|120000.0|bộ|true
+DV010|Ủi đồ lấy liền|40000.0|bộ|true
+DV011|Massage chân|250000.0|lượt|true
+DV012|Xông hơi đá muối|200000.0|lượt|true
+DV013|Chăm sóc da mặt|400000.0|lượt|true
+DV014|Gội đầu dưỡng sinh|180000.0|lượt|true
+DV015|Thuê ô tô 4 chỗ|800000.0|ngày|true
+DV016|Thuê ô tô 7 chỗ|1000000.0|ngày|true
+DV017|Thuê xe đạp đôi|80000.0|ngày|true
+DV018|Đặt vé tham quan|350000.0|vé|true
+DV019|Tour nội thành nửa ngày|500000.0|người|true
+DV020|Tour khám phá ẩm thực|450000.0|người|true
+DV021|Phòng họp nhỏ (10 người)|1500000.0|giờ|true
+DV022|Phòng hội nghị lớn|5000000.0|buổi|true
+DV023|In ấn và Photocopy|5000.0|trang|true
+DV024|Phục vụ đồ ăn tại phòng|100000.0|lần|true
+DV025|Nước suối đóng chai|20000.0|chai|true
+DV026|Nước ngọt các loại|30000.0|lon|true
+DV027|Bia lon ướp lạnh|45000.0|lon|true
+DV028|Rượu vang đỏ|900000.0|chai|true
+DV029|Trái cây tươi theo mùa|180000.0|đĩa|true
+DV030|Bánh kem sinh nhật|350000.0|cái|true
+DV031|Trang trí phòng kỷ niệm|700000.0|gói|true
+DV032|Hoa tươi chúc mừng|400000.0|bó|true
+DV033|Giường phụ (Extra bed)|300000.0|đêm|true
+DV034|Nôi em bé|100000.0|đêm|true
+DV035|Trông trẻ theo giờ|150000.0|giờ|true
+DV036|Vé hồ bơi vô cực|120000.0|vé|true
+DV037|Phòng tập Gym & Yoga|100000.0|ngày|true
+DV038|Sân Tennis|250000.0|giờ|true
+DV039|Karaoke gia đình|400000.0|giờ|true
+DV040|Thuê trang phục chụp ảnh|200000.0|bộ|false

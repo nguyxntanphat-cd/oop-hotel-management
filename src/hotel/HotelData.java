@@ -1,9 +1,11 @@
 package hotel;
 
 import hotel.list.BookingList;
+import hotel.list.CustomerList;
 import hotel.list.EmployeeList;
 import hotel.list.InvoiceList;
 import hotel.list.RoomList;
+import hotel.list.ServiceList;
 
 /**
  * Nơi giữ TẤT CẢ danh sách của chương trình dưới dạng thuộc tính static,
@@ -18,8 +20,8 @@ import hotel.list.RoomList;
  */
 public final class HotelData {
     public static final RoomList ROOMS = new RoomList();
-    // TODO #3 Khách hàng: public static final CustomerList CUSTOMERS = new CustomerList();
-    // TODO #4 Dịch vụ:    public static final ServiceList SERVICES = new ServiceList();
+    public static final CustomerList CUSTOMERS = new CustomerList();
+    public static final ServiceList SERVICES = new ServiceList();
     public static final EmployeeList EMPLOYEES = new EmployeeList();
     public static final BookingList BOOKINGS = new BookingList();
     public static final InvoiceList INVOICES = new InvoiceList();
@@ -30,8 +32,8 @@ public final class HotelData {
     /** Đọc toàn bộ dữ liệu từ thư mục data/ khi khởi động. */
     public static void loadAll() {
         ROOMS.loadFromFile();
-        // TODO #3: CUSTOMERS.loadFromFile();
-        // TODO #4: SERVICES.loadFromFile();
+        CUSTOMERS.loadFromFile();
+        SERVICES.loadFromFile();
         EMPLOYEES.loadFromFile();
         BOOKINGS.loadFromFile();
         INVOICES.loadFromFile();
@@ -40,8 +42,8 @@ public final class HotelData {
     /** Ghi toàn bộ dữ liệu xuống thư mục data/ khi thoát. */
     public static void saveAll() {
         ROOMS.saveToFile();
-        // TODO #3: CUSTOMERS.saveToFile();
-        // TODO #4: SERVICES.saveToFile();
+        CUSTOMERS.saveToFile();
+        SERVICES.saveToFile();
         EMPLOYEES.saveToFile();
         BOOKINGS.saveToFile();
         INVOICES.saveToFile();

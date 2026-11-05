@@ -17,6 +17,11 @@ public class InvoiceList extends BaseList<Invoice> {
     }
 
     @Override
+    protected String getHeader() {
+        return Invoice.header();
+    }
+
+    @Override
     protected Invoice parseLine(String line) {
         String[] p = line.split(hotel.util.AppConfig.SEPARATOR_REGEX, -1);
         if (p.length < 8) return null;

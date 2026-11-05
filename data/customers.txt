@@ -1,0 +1,40 @@
+NORMAL|KH001|Nguyễn Văn An|0901234567|079201001234|Việt Nam|an@gmail.com
+VIP|KH002|Trần Thị Bình|0912345678|079301005678|Việt Nam|binh@gmail.com|GOLD|120
+NORMAL|KH003|Lê Hoàng Cường|0923456789|079202002345|Việt Nam|cuong@gmail.com
+NORMAL|KH004|John Smith|0934567890|079203003456|Mỹ|john.smith@gmail.com
+VIP|KH005|Phạm Minh Châu|0945678901|079304004567|Việt Nam|chau@gmail.com|SILVER|40
+NORMAL|KH006|Võ Thị Dung|0956789012|079205005678|Việt Nam|dung@gmail.com
+NORMAL|KH007|Tanaka Hiroshi|0967890123|079206006789|Nhật Bản|tanaka@gmail.com
+VIP|KH008|Đặng Quốc Huy|0978901234|079207007890|Việt Nam|huy@gmail.com|PLATINUM|450
+NORMAL|KH009|Hoàng Thu Hà|0989012345|079308008901|Việt Nam|ha@gmail.com
+NORMAL|KH010|Kim Min Jun|0990123456|079209009012|Hàn Quốc|minjun@gmail.com
+VIP|KH011|Bùi Thanh Tùng|0901112233|079210001111|Việt Nam|tung.bui@gmail.com|GOLD|150
+NORMAL|KH012|Đỗ Thùy Dương|0902223344|079211002222|Việt Nam|duong.do@gmail.com
+NORMAL|KH013|Lý Gia Hân|0903334455|079212003333|Việt Nam|han.ly@gmail.com
+VIP|KH014|Ngô Quang Khải|0904445566|079213004444|Việt Nam|khai.ngo@gmail.com|SILVER|60
+NORMAL|KH015|David Miller|0905556677|079214005555|Anh|david.m@gmail.com
+VIP|KH016|Trương Mỹ Linh|0906667788|079215006666|Việt Nam|linh.truong@gmail.com|PLATINUM|380
+NORMAL|KH017|Phan Văn Trị|0907778899|079216007777|Việt Nam|tri.phan@gmail.com
+NORMAL|KH018|Đinh Ngọc Diệp|0908889900|079217008888|Việt Nam|diep.dinh@gmail.com
+VIP|KH019|Lương Thế Vinh|0909990011|079218009999|Việt Nam|vinh.luong@gmail.com|GOLD|210
+NORMAL|KH020|Park Ji Hoon|0911112233|079219001010|Hàn Quốc|jihoon.p@gmail.com
+NORMAL|KH021|Mai Phương Thúy|0912223344|079220001212|Việt Nam|thuy.mai@gmail.com
+NORMAL|KH022|Hồ Quang Hiếu|0913334455|079221001313|Việt Nam|hieu.ho@gmail.com
+VIP|KH023|Châu Kiệt Luân|0914445566|079222001414|Đài Loan|jay.chou@gmail.com|PLATINUM|520
+NORMAL|KH024|Tạ Minh Tâm|0915556677|079223001515|Việt Nam|tam.ta@gmail.com
+NORMAL|KH025|Dương Cẩm Lynh|0916667788|079224001616|Việt Nam|lynh.duong@gmail.com
+VIP|KH026|Cao Thái Sơn|0917778899|079225001717|Việt Nam|son.cao@gmail.com|SILVER|75
+NORMAL|KH027|Quách Ngọc Ngoan|0918889900|079226001818|Việt Nam|ngoan.quach@gmail.com
+NORMAL|KH028|Thái Hòa|0919990011|079227001919|Việt Nam|hoa.thai@gmail.com
+VIP|KH029|Đoàn Trang|0921112233|079228002020|Việt Nam|trang.doan@gmail.com|GOLD|180
+NORMAL|KH030|Lâm Vỹ Dạ|0922223344|079229002121|Việt Nam|da.lam@gmail.com
+NORMAL|KH031|Hứa Minh Đạt|0923334455|079230002222|Việt Nam|dat.hua@gmail.com
+VIP|KH032|Ninh Dương Lan Ngọc|0924445566|079231002323|Việt Nam|ngoc.ninh@gmail.com|PLATINUM|410
+NORMAL|KH033|Kiều Minh Tuấn|0925556677|079232002424|Việt Nam|tuan.kieu@gmail.com
+NORMAL|KH034|Thu Trang|0926667788|079233002525|Việt Nam|trang.thu@gmail.com
+VIP|KH035|Tiến Luật|0927778899|079234002626|Việt Nam|luat.tien@gmail.com|SILVER|55
+NORMAL|KH036|Mạc Văn Khoa|0928889900|079235002727|Việt Nam|khoa.mac@gmail.com
+NORMAL|KH037|Lê Dương Bảo Lâm|0929990011|079236002828|Việt Nam|lam.le@gmail.com
+VIP|KH038|Ngô Kiến Huy|0931112233|079237002929|Việt Nam|huy.ngo@gmail.com|GOLD|160
+NORMAL|KH039|Jun Phạm|0932223344|079238003030|Việt Nam|jun.pham@gmail.com
+NORMAL|KH040|Trương Thế Vinh|0933334455|079239003131|Việt Nam|vinh.truong@gmail.com
