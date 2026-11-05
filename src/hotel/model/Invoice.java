@@ -1,15 +1,17 @@
 package hotel.model;
 
 import hotel.common.FileSerializable;
-import hotel.common.Searchable;
 import hotel.common.Identifiable;
+import hotel.common.Payable;
+import hotel.common.Searchable;
 import hotel.util.AppConfig;
 import hotel.util.FileHelper;
 import java.time.LocalDate;
 
-public class Invoice implements Identifiable, FileSerializable, Searchable {
+public class Invoice implements Identifiable, FileSerializable, Searchable, Payable {
     public static final String ID_PREFIX = "HD";
-    
+    private static int createdCount = 0;
+
     private String id;
     private String bookingId;
     private LocalDate issueDate;
@@ -21,7 +23,7 @@ public class Invoice implements Identifiable, FileSerializable, Searchable {
 
     public Invoice() {}
 
-    public Invoice(String id, String bookingId, LocalDate issueDate, double roomCharge, 
+    public Invoice(String id, String bookingId, LocalDate issueDate, double roomCharge,
                    double serviceCharge, double discount, String paymentMethod, boolean paid) {
         this.id = id;
         this.bookingId = bookingId;
@@ -31,16 +33,21 @@ public class Invoice implements Identifiable, FileSerializable, Searchable {
         this.discount = discount;
         this.paymentMethod = paymentMethod;
         this.paid = paid;
+        createdCount++;
     }
 
     public Invoice(Invoice other) {
-        this(other.id, other.bookingId, other.issueDate, other.roomCharge, 
+        this(other.id, other.bookingId, other.issueDate, other.roomCharge,
              other.serviceCharge, other.discount, other.paymentMethod, other.paid);
+    }
+
+    public static int getCreatedCount() {
+        return createdCount;
     }
 
     @Override
     public String getId() { return id; }
-    
+
     public String getBookingId() { return bookingId; }
     public LocalDate getIssueDate() { return issueDate; }
     public double getRoomCharge() { return roomCharge; }
@@ -56,36 +63,41 @@ public class Invoice implements Identifiable, FileSerializable, Searchable {
         return (roomCharge + serviceCharge - discount) * AppConfig.VAT_RATE;
     }
 
+    @Override
     public double calculateTotal() {
         return (roomCharge + serviceCharge - discount) + getVat();
     }
 
-    // --- HÀM TẠO HÓA ĐƠN TỰ ĐỘNG (CHỜ TV3 GỘP CODE) ---
-    /*
-    public static Invoice createFromBooking(String id, Booking booking, hotel.model.Customer customer) {
+    // --- HÀM TẠO HÓA ĐƠN TỰ ĐỘNG THEO HỢP ĐỒNG THIET_KE.md MỤC 3.6 ---
+    public static Invoice createFromBooking(String id, Booking booking, Customer customer) {
         double rCharge = booking.getRoomCharge();
         double sCharge = booking.getServiceCharge();
         double disc = (rCharge + sCharge) * (customer != null ? customer.getDiscountRate() : 0.0);
         return new Invoice(id, booking.getId(), LocalDate.now(), rCharge, sCharge, disc, "CASH", true);
     }
-    */
-    
-    // Bản tạm thời:
+
     public static Invoice createFromBooking(String id, Booking booking) {
-        return new Invoice(id, booking.getId(), LocalDate.now(), 
-                           booking.getRoomCharge(), booking.getServiceCharge(), 0.0, "CASH", true);
+        Customer c = hotel.HotelData.CUSTOMERS.findById(booking.getCustomerId());
+        return createFromBooking(id, booking, c);
     }
+
+    public static String header() {
+        return String.format("%-10s %-10s %-15s %-15s %-15s %-15s",
+                "Mã HĐ", "Mã ĐP", "Ngày lập", "Tổng tiền", "Phương thức", "Trạng thái");
+    }
+
     @Override
     public String toString() {
         return String.format("%-10s %-10s %-15s %-15s %-15s %-15s",
-                id, 
+                id,
                 bookingId,
-                hotel.util.FileHelper.formatDate(issueDate),
-                hotel.util.FileHelper.formatMoney(calculateTotal()),
+                FileHelper.formatDate(issueDate),
+                FileHelper.formatMoney(calculateTotal()),
                 paymentMethod,
                 paid ? "Đã TT" : "Chưa TT");
     }
 
+    @Override
     public String toFileString() {
         return String.join(AppConfig.SEPARATOR,
                 id, bookingId, FileHelper.formatDate(issueDate),
@@ -93,14 +105,14 @@ public class Invoice implements Identifiable, FileSerializable, Searchable {
                 String.valueOf(discount), paymentMethod, String.valueOf(paid)
         );
     }
+
     @Override
     public boolean matches(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return false;
         }
         String kw = keyword.toLowerCase();
-        // Cho phép tìm kiếm hóa đơn theo Mã hóa đơn hoặc Mã đặt phòng
-        return id.toLowerCase().contains(kw) || 
+        return id.toLowerCase().contains(kw) ||
                bookingId.toLowerCase().contains(kw);
     }
 }

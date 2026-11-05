@@ -33,10 +33,10 @@ public class MainMenu extends Menu {
                 new RoomMenu(HotelData.ROOMS).run();
                 break;
             case 2:
-                notReady(3); // TODO #3: new CustomerMenu(HotelData.CUSTOMERS).run();
+                new CustomerMenu(HotelData.CUSTOMERS).run();
                 break;
             case 3:
-                notReady(4); // TODO #4: new ServiceMenu(HotelData.SERVICES).run();
+                new ServiceMenu(HotelData.SERVICES).run();
                 break;
             case 4:
                 new EmployeeMenu(HotelData.EMPLOYEES).run();
