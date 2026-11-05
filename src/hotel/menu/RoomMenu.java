@@ -302,7 +302,7 @@ public class RoomMenu extends CrudMenu<Room> {
         }
 
         if (roomList.add(room)) {
-
+            roomList.saveToFile();
             System.out.println(
                     "Đã thêm phòng " + room.getId()
                             + " - Tầng " + room.getFloor() + "."
@@ -342,6 +342,7 @@ public class RoomMenu extends CrudMenu<Room> {
         if (edited.getId().equals(old.getId())) {
 
             if (roomList.update(old.getId(), edited)) {
+                roomList.saveToFile();
                 System.out.println("Cập nhật thành công.");
             } else {
                 System.out.println("Cập nhật thất bại.");
@@ -365,7 +366,7 @@ public class RoomMenu extends CrudMenu<Room> {
         }
 
         if (roomList.add(edited)) {
-
+            roomList.saveToFile();
             System.out.println(
                     "Cập nhật thành công. Số phòng mới: "
                             + edited.getId()
@@ -681,6 +682,9 @@ public class RoomMenu extends CrudMenu<Room> {
             return;
         }
 
+        roomList.saveToFile();
+        deletedRooms.saveToFile();
+
         System.out.println(
                 "Đã xóa phòng " + room.getId()
                         + " (thông tin được lưu trong danh sách phòng đã xóa)."
@@ -691,12 +695,12 @@ public class RoomMenu extends CrudMenu<Room> {
 
     @Override
     protected void doSearch() {
-
-        Room room = askExistingRoom("Nhập số phòng cần tìm");
-
-        if (room != null) {
-            System.out.println(room);
+        printBack();
+        String keyword = InputHelper.readLine("Nhập từ khóa (số phòng, loại, trạng thái): ").trim();
+        if (keyword.equals(BACK)) {
+            return;
         }
+        showResult(roomList.search(keyword));
     }
 
     // ================= CHỨC NĂNG RIÊNG =================
