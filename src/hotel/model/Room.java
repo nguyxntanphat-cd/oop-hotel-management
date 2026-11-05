@@ -15,12 +15,12 @@ public abstract class Room implements Identifiable, FileSerializable, Searchable
     protected RoomStatus status;
 
     // Constructor mặc định
-    protected Room() {
+    public Room() {
         this("", 0, RoomStatus.AVAILABLE);
     }
 
     // Constructor đầy đủ
-    protected Room(String roomNumber, int floor, RoomStatus status) {
+    public Room(String roomNumber, int floor, RoomStatus status) {
         this.roomNumber = roomNumber;
         this.floor = floor;
         this.status = status;
@@ -28,7 +28,7 @@ public abstract class Room implements Identifiable, FileSerializable, Searchable
     }
 
     // Copy constructor
-    protected Room(Room other) {
+    public Room(Room other) {
         this(other.roomNumber, other.floor, other.status);
     }
 
