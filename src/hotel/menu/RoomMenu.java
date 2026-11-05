@@ -811,31 +811,32 @@ public class RoomMenu extends CrudMenu<Room> {
 
     // ================= LỌC THEO KHOẢNG GIÁ =================
 
+    // Lọc theo khoảng giá: nhập -1 ở câu đầu để quay lại
     private void filterByPrice() {
-
-        double min = InputHelper.readPositiveDouble(
-                "Giá thấp nhất: "
-        );
-
-        double max = InputHelper.readPositiveDouble(
-                "Giá cao nhất: "
-        );
-
-        while (min >= max) {
-
-            System.out.println(
-                    "Giá thấp nhất phải nhỏ hơn giá cao nhất, "
-                            + "mời nhập lại giá cao nhất."
-            );
-
-            max = InputHelper.readPositiveDouble(
-                    "Giá cao nhất: "
-            );
+        printBack();
+        double min = 0;
+        while (true) {
+            String text = InputHelper.readString("Giá thấp nhất: ").trim();
+            if (text.equals(BACK)) {
+                return;
+            }
+            try {
+                min = Double.parseDouble(text);
+                if (min > 0) {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                // nhập chữ thì báo lỗi bên dưới rồi cho nhập lại
+            }
+            System.out.println("Vui lòng nhập số lớn hơn 0.");
         }
 
-        showResult(
-                roomList.findByPriceRange(min, max)
-        );
+        double max = InputHelper.readPositiveDouble("Giá cao nhất: ");
+        while (min >= max) {
+            System.out.println("Giá thấp nhất phải nhỏ hơn giá cao nhất, mời nhập lại giá cao nhất.");
+            max = InputHelper.readPositiveDouble("Giá cao nhất: ");
+        }
+        showResult(roomList.findByPriceRange(min, max));
     }
 
     // ================= XEM PHÒNG ĐÃ XÓA =================
