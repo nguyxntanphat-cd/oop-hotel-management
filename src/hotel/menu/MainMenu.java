@@ -48,15 +48,11 @@ public class MainMenu extends Menu {
                 new InvoiceMenu(HotelData.INVOICES).run();
                 break;
             case 7:
-                notReady(8); // TODO #8: new StatisticsMenu().run();
+                new StatisticsMenu().run();
                 break;
             default:
                 break;
         }
-    }
-
-    private void notReady(int issue) {
-        System.out.println("Chức năng đang được phát triển (issue #" + issue + ").");
     }
 
     @Override
