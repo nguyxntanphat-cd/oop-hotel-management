@@ -1,19 +1,24 @@
-
 package hotel.menu;
 
 import hotel.HotelData;
 import hotel.list.RoomList;
-import hotel.model.*;
+import hotel.model.DeluxeRoom;
+import hotel.model.Room;
+import hotel.model.RoomStatus;
+import hotel.model.StandardRoom;
+import hotel.model.SuiteRoom;
 import hotel.util.FileHelper;
 import hotel.util.InputHelper;
 
 import java.util.List;
 
 public class RoomMenu extends CrudMenu<Room> {
-
     private static final String BACK = "-1";
+    private static final String TYPES = "1. Standard   2. Deluxe   3. Suite";
+
     private final RoomList roomList;
-    private final RoomList deletedRooms;
+    private final RoomList deletedRooms;   // phòng đã xóa, lưu trong rooms_deleted.txt
+    private Room lastFound;                // phòng vừa được chọn ở askExisting
 
     private static class DeletedRoomList extends RoomList {
         @Override
@@ -29,6 +34,8 @@ public class RoomMenu extends CrudMenu<Room> {
         deletedRooms.loadFromFile();
     }
 
+    // ==================== HÀM DÙNG CHUNG ====================
+
     private int getFloor(String number) {
         return Integer.parseInt(number) / 100;
     }
@@ -39,122 +46,108 @@ public class RoomMenu extends CrudMenu<Room> {
 
     private boolean askYesNo(String question) {
         while (true) {
-            String s = InputHelper.readString(question + " (y/n): ")
-                    .trim().toLowerCase();
-
+            String s = InputHelper.readString(question + " (y/n): ").trim().toLowerCase();
             if (s.equals("y")) return true;
             if (s.equals("n")) return false;
-
             System.out.println("Vui lòng chỉ nhập y hoặc n.");
         }
     }
 
-    // Nhập số, có thể cho phép quay lại bằng -1
-    private Integer askNumber(String prompt, int min, int max,
-                              boolean allowBack) {
+    // Nhập số nguyên min..max; allowBack = true thì nhập -1 để quay lại (trả về null)
+    private Integer askNumber(String prompt, int min, int max, boolean allowBack) {
         if (allowBack) printBack();
-
         while (true) {
             String text = InputHelper.readString(prompt + ": ").trim();
-
             if (allowBack && text.equals(BACK)) return null;
-
             try {
                 int value = Integer.parseInt(text);
                 if (value >= min && value <= max) return value;
             } catch (NumberFormatException e) {
-                // Nhập sai
+                // nhập chữ thì báo lỗi bên dưới
             }
-
             System.out.println("Vui lòng nhập số từ " + min + " đến " + max + ".");
         }
     }
 
-    private Room askExistingRoom(String prompt) {
-        printBack();
-
+    // Nhập giá tiền > 0; allowBack = true thì nhập -1 để quay lại (trả về null)
+    private Double askPrice(String prompt, boolean allowBack) {
+        if (allowBack) printBack();
         while (true) {
-            String number = InputHelper.readString(prompt + ": ").trim();
-            if (number.equals(BACK)) return null;
-
-            Room room = roomList.findById(number);
-            if (room != null) return room;
-
-            System.out.println("Không tìm thấy phòng " + number + ".");
+            String text = InputHelper.readString(prompt + ": ").trim();
+            if (allowBack && text.equals(BACK)) return null;
+            try {
+                double value = Double.parseDouble(text);
+                if (value > 0) return value;
+            } catch (NumberFormatException e) {
+                // nhập chữ thì báo lỗi bên dưới
+            }
+            System.out.println("Vui lòng nhập giá lớn hơn 0.");
         }
     }
 
+    // Ghi đè hàm của CrudMenu (Sửa và Xóa dùng): nhập sai thì hỏi lại, nhập -1 để quay lại
+    @Override
+    protected Room askExisting(String prompt) {
+        printBack();
+        while (true) {
+            String number = InputHelper.readString(prompt).trim();
+            if (number.equals(BACK)) return null;
+            lastFound = roomList.findById(number);
+            if (lastFound != null) return lastFound;
+            System.out.println("Không tìm thấy phòng " + number + ", vui lòng nhập lại.");
+        }
+    }
+
+    // Số phòng gồm 3-4 chữ số, tầng = số phòng / 100 (tối đa 50), không trùng
     private String askNewRoomNumber(String currentId, boolean allowBack) {
         if (allowBack) printBack();
-
         while (true) {
-            String prompt = allowBack
-                    ? "Số phòng (chỉ nhập số): "
-                    : "Số phòng mới (chỉ nhập số): ";
-
-            String number = InputHelper.readString(prompt).trim();
-
+            String number = InputHelper.readString("Số phòng (3-4 chữ số): ").trim();
             if (allowBack && number.equals(BACK)) return null;
-
-            if (!number.matches("[1-9][0-9]*")) {
-                System.out.println("Số phòng chỉ gồm chữ số và không bắt đầu bằng 0.");
-                continue;
-            }
-
-            try {
-                int floor = getFloor(number);
-
-                if (floor < 1 || floor > 50) {
-                    System.out.println("Số phòng phải thuộc tầng từ 1 đến 50.");
-                } else if (!number.equals(currentId) && roomList.exists(number)) {
-                    System.out.println("Số phòng đã tồn tại.");
-                } else {
-                    return number;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Số phòng không hợp lệ.");
+            if (!number.matches("[1-9][0-9]{2,3}") || getFloor(number) > 50) {
+                System.out.println("Số phòng gồm 3-4 chữ số, không bắt đầu bằng 0, tầng tối đa 50.");
+            } else if (!number.equals(currentId) && roomList.exists(number)) {
+                System.out.println("Số phòng đã tồn tại.");
+            } else {
+                return number;
             }
         }
     }
 
-    // Kiểm tra trạng thái phòng và booking
-    private boolean isRoomLocked(Room room) {
-        if (room == null) return false;
-
+    // Phòng đã đặt, đang có khách hoặc đang có booking thì không được sửa / xóa
+    private boolean isLocked(Room room) {
         boolean locked = room.getStatus() == RoomStatus.RESERVED
                 || room.getStatus() == RoomStatus.OCCUPIED
                 || HotelData.isRoomInUse(room.getId());
-
         if (locked) {
             System.out.println("Phòng " + room.getId()
                     + " đã được đặt hoặc đang có khách ở, không thể sửa hoặc xóa!");
         }
-
         return locked;
     }
 
+    // Khi đang sửa: chưa đổi thì hiện giá trị cũ, đổi rồi thì hiện "cũ -> mới (chưa lưu)"
     private String changeText(String oldValue, String newValue) {
-        return oldValue.equals(newValue)
-                ? oldValue : oldValue + " -> " + newValue + " (chưa lưu)";
+        return oldValue.equals(newValue) ? oldValue : oldValue + " -> " + newValue + " (chưa lưu)";
     }
 
-    // Hiển thị thông tin riêng của từng loại phòng
-    private String bathtubText(Room room) {
-        if (!(room instanceof DeluxeRoom)) return "-";
-        return ((DeluxeRoom) room).isHasBathtub() ? "Có" : "Không";
+    private String yesNo(boolean value) {
+        return value ? "Có" : "Không";
     }
 
-    private String balconyText(Room room) {
-        if (!(room instanceof DeluxeRoom)) return "-";
-        return ((DeluxeRoom) room).isHasBalcony() ? "Có" : "Không";
+    private String bathtubText(Room r) {
+        return r instanceof DeluxeRoom ? yesNo(((DeluxeRoom) r).isHasBathtub()) : "-";
     }
 
-    private String bedroomsText(Room room) {
-        if (!(room instanceof SuiteRoom)) return "-";
-        return String.valueOf(((SuiteRoom) room).getNumberOfBedrooms());
+    private String balconyText(Room r) {
+        return r instanceof DeluxeRoom ? yesNo(((DeluxeRoom) r).isHasBalcony()) : "-";
     }
 
-    // ==================== THÊM PHÒNG ====================
+    private String bedroomsText(Room r) {
+        return r instanceof SuiteRoom ? String.valueOf(((SuiteRoom) r).getNumberOfBedrooms()) : "-";
+    }
+
+    // ==================== THÊM (CrudMenu.doAdd gọi inputNew) ====================
 
     @Override
     protected Room inputNew() {
@@ -162,17 +155,13 @@ public class RoomMenu extends CrudMenu<Room> {
         if (number == null) return null;
 
         int floor = getFloor(number);
-
-        System.out.println("Số phòng: " + number);
         System.out.println("Tầng: " + floor);
-        System.out.println("1. Standard   2. Deluxe   3. Suite");
-
+        System.out.println(TYPES);
         int type = InputHelper.readInt("Chọn loại phòng (1-3): ", 1, 3);
         return createRoom(type, number, floor, RoomStatus.AVAILABLE);
     }
 
-    private Room createRoom(int type, String number, int floor,
-                            RoomStatus status) {
+    private Room createRoom(int type, String number, int floor, RoomStatus status) {
         switch (type) {
             case 1:
                 return new StandardRoom(number, floor, status);
@@ -186,163 +175,102 @@ public class RoomMenu extends CrudMenu<Room> {
         }
     }
 
-    @Override
-    protected void doAdd() {
-        Room room = inputNew();
+    // ==================== SỬA ====================
 
-        if (room == null) {
-            System.out.println("Đã hủy thao tác thêm phòng.");
-            return;
-        }
-
-        if (roomList.add(room)) {
-            roomList.saveToFile();
-            System.out.println("Thêm phòng thành công: " + room.getId());
-        } else {
-            System.out.println("Thêm phòng thất bại: số phòng đã tồn tại.");
-        }
-    }
-
-    // ==================== SỬA PHÒNG ====================
-
+    // Phải viết lại doEdit vì có đổi số phòng (update của CrudMenu chỉ đổi theo mã cũ)
     @Override
     protected void doEdit() {
-        Room old = askExistingRoom("Nhập số phòng cần sửa");
-        if (old == null || isRoomLocked(old)) return;
+        Room old = askExisting("Nhập số phòng cần sửa: ");
+        if (old == null || isLocked(old)) return;
 
         System.out.println(old);
         Room edited = inputEdit(old);
-
         if (edited == null) {
-            System.out.println("Đã hủy thao tác sửa phòng.");
+            System.out.println("Đã hủy sửa.");
             return;
         }
 
+        boolean ok;
         if (edited.getId().equals(old.getId())) {
-            if (roomList.update(old.getId(), edited)) {
-                roomList.saveToFile();
-                System.out.println("Cập nhật phòng thành công.");
-            } else {
-                System.out.println("Cập nhật phòng thất bại.");
-            }
-            return;
+            ok = roomList.update(old.getId(), edited);
+        } else {                                    // đổi số phòng: xóa phòng cũ rồi thêm phòng mới
+            roomList.remove(old.getId());
+            ok = roomList.add(edited);
+            if (!ok) roomList.add(old);             // lỗi thì trả lại phòng cũ
         }
-
-        if (!roomList.remove(old.getId())) {
-            System.out.println("Không thể cập nhật phòng.");
-            return;
-        }
-
-        if (roomList.add(edited)) {
-            roomList.saveToFile();
-            System.out.println("Đổi số phòng thành công: " + edited.getId());
-        } else {
-            roomList.add(old);
-            roomList.saveToFile();
-            System.out.println("Cập nhật thất bại. Đã khôi phục phòng cũ.");
-        }
+        roomList.saveToFile();
+        System.out.println(ok ? "Cập nhật thành công." : "Cập nhật thất bại.");
     }
 
+    // Sửa trên BẢN SAO: chọn 0 mới trả bản sao về để lưu, chọn -1 là hủy
     @Override
     protected Room inputEdit(Room old) {
         Room room = copyOf(old);
-
         while (true) {
             System.out.println("\nChọn thông tin muốn sửa:");
-            System.out.println("1. Số phòng: "
-                    + changeText(old.getId(), room.getId()));
-            System.out.println("2. Loại phòng: "
-                    + changeText(old.getRoomType(), room.getRoomType()));
+            System.out.println("1. Số phòng: " + changeText(old.getId(), room.getId()));
+            System.out.println("2. Loại phòng: " + changeText(old.getRoomType(), room.getRoomType()));
 
-            int max = 3;
-
-            if (old instanceof DeluxeRoom || room instanceof DeluxeRoom) {
-                System.out.println("3. Bồn tắm: "
-                        + changeText(bathtubText(old), bathtubText(room)));
-                System.out.println("4. Ban công: "
-                        + changeText(balconyText(old), balconyText(room)));
-                System.out.println("5. Trạng thái: "
-                        + changeText(old.getStatus().getDisplayName(),
-                        room.getStatus().getDisplayName()));
-                max = 5;
-            } else if (old instanceof SuiteRoom || room instanceof SuiteRoom) {
-                System.out.println("3. Số phòng ngủ: "
-                        + changeText(bedroomsText(old), bedroomsText(room)));
-                System.out.println("4. Trạng thái: "
-                        + changeText(old.getStatus().getDisplayName(),
-                        room.getStatus().getDisplayName()));
-                max = 4;
-            } else {
-                System.out.println("3. Trạng thái: "
-                        + changeText(old.getStatus().getDisplayName(),
-                        room.getStatus().getDisplayName()));
+            int last = 3;                           // mục cuối cùng luôn là Trạng thái
+            if (room instanceof DeluxeRoom) {
+                System.out.println("3. Bồn tắm: " + changeText(bathtubText(old), bathtubText(room)));
+                System.out.println("4. Ban công: " + changeText(balconyText(old), balconyText(room)));
+                last = 5;
+            } else if (room instanceof SuiteRoom) {
+                System.out.println("3. Số phòng ngủ: " + changeText(bedroomsText(old), bedroomsText(room)));
+                last = 4;
             }
-
-            System.out.println("Tầng: " + room.getFloor());
-            System.out.println("Giá/đêm: "
-                    + changeText(FileHelper.formatMoney(old.getPricePerNight()),
+            System.out.println(last + ". Trạng thái: " + changeText(
+                    old.getStatus().getDisplayName(), room.getStatus().getDisplayName()));
+            System.out.println("Tầng: " + room.getFloor() + "   Giá/đêm: " + changeText(
+                    FileHelper.formatMoney(old.getPricePerNight()),
                     FileHelper.formatMoney(room.getPricePerNight())));
             System.out.println("0. Lưu thay đổi");
-            System.out.println("-1. Hủy");
+            System.out.println("-1. Hủy, không lưu");
 
-            int choice = askNumber("Chọn", -1, max, false);
-
+            int choice = askNumber("Chọn", -1, last, false);
             if (choice == -1) return null;
             if (choice == 0) return room;
 
             if (choice == 1) {
-                room = withNumber(room,
-                        askNewRoomNumber(old.getId(), false));
+                room = withNumber(room, askNewRoomNumber(old.getId(), false));
             } else if (choice == 2) {
                 room = changeType(room);
-            } else if (choice == 3 && room instanceof DeluxeRoom) {
-                ((DeluxeRoom) room).setHasBathtub(
-                        askYesNo("Phòng có bồn tắm không?"));
-            } else if (choice == 4 && room instanceof DeluxeRoom) {
-                ((DeluxeRoom) room).setHasBalcony(
-                        askYesNo("Phòng có ban công không?"));
-            } else if (choice == 3 && room instanceof SuiteRoom) {
-                ((SuiteRoom) room).setNumberOfBedrooms(
-                        InputHelper.readInt("Số phòng ngủ mới (1-5): ", 1, 5));
-            } else {
+            } else if (choice == last) {
                 changeRoomStatus(room);
+            } else if (room instanceof DeluxeRoom) {
+                DeluxeRoom d = (DeluxeRoom) room;
+                if (choice == 3) {
+                    d.setHasBathtub(askYesNo("Phòng có bồn tắm không?"));
+                } else {
+                    d.setHasBalcony(askYesNo("Phòng có ban công không?"));
+                }
+            } else {
+                ((SuiteRoom) room).setNumberOfBedrooms(InputHelper.readInt("Số phòng ngủ mới (1-5): ", 1, 5));
             }
         }
     }
 
+    // Trạng thái chỉ đổi: Trống -> Bảo trì, Bảo trì / Đang dọn -> Trống (hỏi y/n)
     private void changeRoomStatus(Room room) {
-        RoomStatus currentStatus = room.getStatus();
+        RoomStatus current = room.getStatus();
+        boolean toMaintenance = current == RoomStatus.AVAILABLE;
 
-        System.out.println("\n--- SỬA TRẠNG THÁI PHÒNG ---");
-        System.out.println("Trạng thái hiện tại: " + currentStatus);
+        System.out.println("Trạng thái hiện tại: " + current.getDisplayName());
+        String question = toMaintenance
+                ? "Bạn có muốn chuyển phòng sang Bảo trì không?"
+                : "Phòng đã sẵn sàng đón khách, chuyển sang Trống?";
 
-        if (currentStatus == RoomStatus.AVAILABLE) {
-            System.out.println("Bạn có muốn chuyển trạng thái sang BẢO TRÌ không?");
-            if (askYesNo("Xác nhận chuyển sang bảo trì?")) {
-                room.setStatus(RoomStatus.MAINTENANCE);
-                System.out.println("Đã chuyển phòng sang trạng thái BẢO TRÌ.");
-            } else {
-                System.out.println("Đã hủy thay đổi.");
-            }
-
-        } else if (currentStatus == RoomStatus.CLEANING
-                || currentStatus == RoomStatus.MAINTENANCE) {
-
-            System.out.println("Bạn có muốn chuyển trạng thái sang TRỐNG không?");
-            if (askYesNo("Xác nhận chuyển sang trống?")) {
-                room.setStatus(RoomStatus.AVAILABLE);
-                System.out.println("Đã chuyển phòng sang trạng thái TRỐNG.");
-            } else {
-                System.out.println("Đã hủy thay đổi.");
-            }
-
+        if (askYesNo(question)) {
+            room.setStatus(toMaintenance ? RoomStatus.MAINTENANCE : RoomStatus.AVAILABLE);
+            System.out.println("Đã chọn trạng thái: " + room.getStatus().getDisplayName() + ".");
         } else {
-            System.out.println("Không thể sửa trạng thái phòng đang "
-                    + currentStatus + ".");
+            System.out.println("Đã hủy thay đổi.");
         }
     }
+
     private Room changeType(Room room) {
-        System.out.println("1. Standard   2. Deluxe   3. Suite");
+        System.out.println(TYPES);
         int type = InputHelper.readInt("Chọn loại phòng mới (1-3): ", 1, 3);
 
         if ((type == 1 && room instanceof StandardRoom)
@@ -351,7 +279,6 @@ public class RoomMenu extends CrudMenu<Room> {
             System.out.println("Phòng đã thuộc loại này.");
             return room;
         }
-
         return createRoom(type, room.getId(), room.getFloor(), room.getStatus());
     }
 
@@ -366,66 +293,32 @@ public class RoomMenu extends CrudMenu<Room> {
 
         if (room instanceof DeluxeRoom) {
             DeluxeRoom d = (DeluxeRoom) room;
-            return new DeluxeRoom(number, floor, d.getStatus(),
-                    d.isHasBathtub(), d.isHasBalcony());
+            return new DeluxeRoom(number, floor, d.getStatus(), d.isHasBathtub(), d.isHasBalcony());
         }
-
         if (room instanceof SuiteRoom) {
             SuiteRoom s = (SuiteRoom) room;
-            return new SuiteRoom(number, floor, s.getStatus(),
-                    s.getNumberOfBedrooms());
+            return new SuiteRoom(number, floor, s.getStatus(), s.getNumberOfBedrooms());
         }
-
         return new StandardRoom(number, floor, room.getStatus());
     }
 
-    // ==================== XÓA PHÒNG ====================
-
-    @Override
-    protected void doRemove() {
-        Room room = askExistingRoom("Nhập số phòng cần xóa");
-        if (room == null) return;
-
-        System.out.println(room);
-        if (!canRemove(room)) return;
-
-        if (!askYesNo("Bạn có chắc chắn muốn xóa phòng này không?")) {
-            System.out.println("Đã hủy thao tác xóa.");
-            return;
-        }
-
-        deletedRooms.remove(room.getId());
-
-        if (!deletedRooms.add(room)) {
-            System.out.println("Không thể lưu phòng vào danh sách đã xóa.");
-            return;
-        }
-
-        if (!roomList.remove(room.getId())) {
-            deletedRooms.remove(room.getId());
-            System.out.println("Xóa phòng thất bại.");
-            return;
-        }
-
-        roomList.saveToFile();
-        deletedRooms.saveToFile();
-        System.out.println("Đã xóa phòng " + room.getId());
-    }
+    // ==================== XÓA ====================
 
     @Override
     protected boolean canRemove(Room room) {
-        return !isRoomLocked(room);
+        return !isLocked(room);
     }
 
-    // ==================== TÌM KIẾM ====================
-
+    // Dùng lại CrudMenu.doRemove (hỏi mã, xác nhận, xóa, lưu), chỉ thêm bước lưu vào danh sách đã xóa
     @Override
-    protected void doSearch() {
-        printBack();
-        String keyword = InputHelper.readLine("Nhập số phòng: ").trim();
+    protected void doRemove() {
+        lastFound = null;
+        super.doRemove();
 
-        if (!keyword.equals(BACK)) {
-            showResult(roomList.search(keyword));
+        if (lastFound != null && !roomList.exists(lastFound.getId())) {   // đã xóa thật
+            deletedRooms.remove(lastFound.getId());     // nếu từng xóa số phòng này thì ghi đè
+            deletedRooms.add(lastFound);
+            deletedRooms.saveToFile();
         }
     }
 
@@ -462,53 +355,29 @@ public class RoomMenu extends CrudMenu<Room> {
 
     private void filterByType() {
         String[] names = {"Standard", "Deluxe", "Suite"};
-        System.out.println("1. Standard   2. Deluxe   3. Suite");
-
+        System.out.println(TYPES);
         Integer type = askNumber("Chọn loại phòng", 1, 3, true);
         if (type != null) showResult(roomList.findByType(names[type - 1]));
     }
 
     private void filterByStatus() {
-        RoomStatus[] statuses = RoomStatus.values();
-
-        for (int i = 0; i < statuses.length; i++) {
-            System.out.println((i + 1) + ". "
-                    + statuses[i].getDisplayName());
+        RoomStatus[] all = RoomStatus.values();
+        for (int i = 0; i < all.length; i++) {
+            System.out.println((i + 1) + ". " + all[i].getDisplayName());
         }
-
-        Integer choice = askNumber("Chọn trạng thái phòng",
-                1, statuses.length, true);
-
-        if (choice != null) {
-            showResult(roomList.findByStatus(statuses[choice - 1]));
-        }
+        Integer choice = askNumber("Chọn trạng thái phòng", 1, all.length, true);
+        if (choice != null) showResult(roomList.findByStatus(all[choice - 1]));
     }
 
     private void filterByPrice() {
-        printBack();
-        double min;
+        Double min = askPrice("Nhập giá thấp nhất", true);
+        if (min == null) return;
 
-        while (true) {
-            String text = InputHelper.readString("Nhập giá thấp nhất: ").trim();
-            if (text.equals(BACK)) return;
-
-            try {
-                min = Double.parseDouble(text);
-                if (min > 0) break;
-            } catch (NumberFormatException e) {
-                // Nhập sai
-            }
-
-            System.out.println("Vui lòng nhập giá lớn hơn 0.");
-        }
-
-        double max = InputHelper.readPositiveDouble("Nhập giá cao nhất: ");
-
-        while (min >= max) {
+        Double max = askPrice("Nhập giá cao nhất", false);
+        while (max <= min) {
             System.out.println("Giá cao nhất phải lớn hơn giá thấp nhất.");
-            max = InputHelper.readPositiveDouble("Nhập lại giá cao nhất: ");
+            max = askPrice("Nhập lại giá cao nhất", false);
         }
-
         showResult(roomList.findByPriceRange(min, max));
     }
 
